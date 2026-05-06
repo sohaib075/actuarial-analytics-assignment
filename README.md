@@ -36,12 +36,7 @@ A comprehensive statistical analysis of insurance pricing factors using 46 advan
 ```
 actuarial-analytics-assignment/
 ├── notebooks/
-│   └── Actuarial_Analytics_Assignment.ipynb    # Main analysis (31 cells)
-├── docs/
-│   ├── PHASE_COMPLIANCE_AUDIT.md               # Technical validation
-│   ├── COMPLETION_CHECKLIST.md                 # Task tracker (46/46)
-│   └── EXECUTIVE_SUMMARY.md                    # Business recommendations
-├── data/                                        # Data files (if applicable)
+│   └── Actuarial_Analytics_Assignment.ipynb    # Main analysis (46 tasks)
 ├── .gitignore                                   # Git exclusions
 ├── requirements.txt                             # Python dependencies
 └── README.md                                    # This file
@@ -70,11 +65,6 @@ pip install -r requirements.txt
 ```bash
 jupyter notebook notebooks/Actuarial_Analytics_Assignment.ipynb
 ```
-
-### 4️⃣ Review Documentation
-- 📄 Start with: `docs/EXECUTIVE_SUMMARY.md` (business findings)
-- 🔍 Deep dive: `docs/PHASE_COMPLIANCE_AUDIT.md` (technical details)
-- ✓ Verify: `docs/COMPLETION_CHECKLIST.md` (all 46 tasks)
 
 ---
 
