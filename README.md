@@ -2,129 +2,184 @@
 
 A comprehensive statistical analysis of insurance pricing factors using 46 advanced data science tasks. This project demonstrates rigorous hypothesis testing, distribution fitting, and multiple comparison correction for actuarial decision-making.
 
-**🔗 Live Demo:** [View on GitHub](https://github.com/sohaib075/actuarial-analytics-assignment)
+[![GitHub](https://img.shields.io/badge/GitHub-Repo-blue?logo=github)](https://github.com/sohaib075/actuarial-analytics-assignment)
+[![License](https://img.shields.io/badge/License-MIT-green)]()
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 
 ---
 
-## 📊 Project Overview
+## 📊 Executive Summary
 
-This assignment analyzes **1,338 insurance policyholders** across 7 variables to answer critical actuarial questions:
-- Which factors justify separate pricing tiers?
-- How large are the risk differences (effect sizes)?
-- What are the confidence bounds on premium differentials?
+**Statistical Analysis of 1,338 Insurance Policyholders**
 
-**Dataset:** [Machine Learning with R Datasets](https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/insurance.csv)
+| Metric | Value |
+|--------|-------|
+| Sample Size | 1,338 policyholders |
+| Data Completeness | 100% (no missing values) |
+| Smokers | 274 (20.48%) |
+| Avg Premium | $13,270 |
+| Premium Range | $1,121 - $63,770 |
 
-### Key Statistics
-- **Sample Size:** 1,338 policyholders | **0% missing data**
-- **Coverage:** 4 regions, 2 genders, age range 18-64, BMI 16-54, charges $1K-$64K
-- **Smokers:** 274 (20.48%) | **Average premium:** $13,270
+### 🎯 Key Findings
+
+| Factor | Recommendation | Evidence |
+|--------|---|---|
+| **Smoking** | ✅ Implement separate tier | d=1.88 (large), p<0.001, 95% CI: [$23k-$25k] |
+| **Sex** | ❌ Do not implement | d=0.11 (negligible), confounded by smoking |
+| **Age & BMI** | ✅ Include in model | r=0.11 (p<0.001), both independent |
+| **Region** | ❌ Do not implement | No difference after Bonferroni correction |
 
 ---
 
-## 🎯 What's Inside
+## 📁 Project Structure
+
+```
+actuarial-analytics-assignment/
+├── notebooks/
+│   └── Actuarial_Analytics_Assignment.ipynb    # Main analysis (31 cells)
+├── docs/
+│   ├── PHASE_COMPLIANCE_AUDIT.md               # Technical validation
+│   ├── COMPLETION_CHECKLIST.md                 # Task tracker (46/46)
+│   └── EXECUTIVE_SUMMARY.md                    # Business recommendations
+├── data/                                        # Data files (if applicable)
+├── .gitignore                                   # Git exclusions
+├── requirements.txt                             # Python dependencies
+└── README.md                                    # This file
+```
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Clone Repository
+```bash
+git clone https://github.com/sohaib075/actuarial-analytics-assignment.git
+cd actuarial-analytics-assignment
+```
+
+### 2️⃣ Set Up Environment
+```bash
+python -m venv venv
+source venv/Scripts/activate  # Windows
+# or
+source venv/bin/activate      # macOS/Linux
+
+pip install -r requirements.txt
+```
+
+### 3️⃣ Run Analysis
+```bash
+jupyter notebook notebooks/Actuarial_Analytics_Assignment.ipynb
+```
+
+### 4️⃣ Review Documentation
+- 📄 Start with: `docs/EXECUTIVE_SUMMARY.md` (business findings)
+- 🔍 Deep dive: `docs/PHASE_COMPLIANCE_AUDIT.md` (technical details)
+- ✓ Verify: `docs/COMPLETION_CHECKLIST.md` (all 46 tasks)
+
+---
+
+## 📊 Analysis Overview
 
 ### Part 1: Distribution Fitting (14 Tasks)
-✅ **Normal Distribution — BMI**
+**Normal Distribution — BMI**
 - Parameters: μ=30.66, σ=6.10
-- CDF predictions vs. actual proportions
-- Percentile analysis for extreme risk groups
-- Histogram + PDF overlay validation
+- Model accuracy: 98.51% (error: 1.49%)
+- Conclusion: ✅ Normal model suitable for BMI categorization
 
-✅ **Binomial Distribution — Smoker Status**
+**Binomial Distribution — Smoker Status**
 - Probability: p = 0.2048
-- Manual PMF calculation using `math.comb()`
-- Simulation of random samples
-- Sex-stratified analysis
+- Manual PMF: `math.comb()` implementation verified against scipy
+- Most likely: P(X=10 in 50) = 13.93%
 
-✅ **Poisson Distribution — Children Count**
+**Poisson Distribution — Children Count**
 - Rate: λ = 1.0949
-- Manual PMF using `math.factorial()` and `math.exp()`
-- Misclassification analysis (bimodal data warning)
-- Business recommendation: use empirical counts for pricing
+- Finding: Data is **bimodal** ("no kids" vs "multiple kids")
+- Recommendation: ⚠️ Use empirical counts, not Poisson, for pricing
 
 ---
 
 ### Part 2: Hypothesis Testing (21 Tasks)
 
-#### 2.1 Smoker Pricing Pipeline (7 Tasks)
-1. **Descriptive Statistics:** Smokers (μ=$32,050) vs. Non-smokers (μ=$8,434)
-2. **Levene's Test:** Variance equality assessment
-3. **Welch's t-test:** t=17.87, p<0.001 ✓ **SIGNIFICANT**
-4. **95% CI:** [$23,195, $24,985] — Entire interval positive
-5. **Cohen's d:** 1.88 — **LARGE effect size** (>0.8)
-6. **Mann-Whitney U:** p<0.001 — Non-parametric agreement ✓
-7. **Recommendation:** ✅ **Implement separate smoker tier**
+---
 
-#### 2.2 Sex Pricing Sensitivity (4 Tasks)
-- Males: μ=$13,956 | Females: μ=$12,569 | Difference: $1,387
-- **Cohen's d:** 0.11 — **Negligible effect size**
-- **Finding:** Sex difference disappears after controlling for smoking
-- **Recommendation:** ❌ **Do NOT implement sex pricing** (confounding)
+### Part 2: Hypothesis Testing (21 Tasks)
 
-#### 2.3 Age & BMI Correlation (4 Tasks)
-- Pearson r: 0.109 (p=0.0002) — **Weak but significant**
-- Both independent variables; no multicollinearity
-- Recommendation: Include both in premium model
+#### Smoker Pricing (7 Tasks)
+```
+Step 1: Descriptive Stats → Smokers: $32,050 | Non-smokers: $8,434
+Step 2: Levene's Test     → Use Welch's t-test (variances unequal)
+Step 3: Welch's t-test    → t=17.87, df=274.7, p<0.001 ✓ SIGNIFICANT
+Step 4: 95% CI            → [$23,195, $24,985] (entire interval positive)
+Step 5: Cohen's d         → d=1.88 (LARGE effect, >0.8)
+Step 6: Mann-Whitney U    → p<0.001 (non-parametric agreement ✓)
+```
+**Recommendation:** ✅ **Implement separate smoker tier** (~$24K premium differential)
 
-#### 2.4 Regional Pricing with Bonferroni Correction (6 Tasks)
-- 6 pairwise t-tests × 6 comparisons = 26% FWER without correction
-- **Bonferroni α:** 0.05/6 = 0.00833
-- **Result:** All regional pairs become non-significant after correction
-- **Recommendation:** ❌ **No regional pricing justified**
+#### Sex Pricing (4 Tasks)
+- Males: $13,956 | Females: $12,569 | Difference: $1,387
+- Cohen's d: 0.11 (negligible effect)
+- Confounding: Sex difference disappears when controlling for smoking
+- **Recommendation:** ❌ **Do NOT implement sex pricing**
+
+#### Age & BMI Correlation (4 Tasks)
+- Pearson r: 0.109 (p<0.001) — weak but significant
+- Both variables independent (no multicollinearity)
+- **Recommendation:** ✅ **Include both in premium model**
+
+#### Regional Pricing with Bonferroni (6 Tasks)
+- 6 pairwise t-tests × Bonferroni α: 0.05/6 = **0.00833**
+- Unadjusted FWER: 26% | Corrected: 5% ✓
+- Result: All regional pairs become non-significant after correction
+- **Recommendation:** ❌ **Do NOT implement regional pricing**
 
 ---
 
 ### Part 3: Custom Investigations (10 Tasks)
 
-#### 3.1 Sex-Stratified Smoking Analysis (5 Tasks)
-- Males: 23.52% smokers | Females: 17.37% smokers
-- Sex explains smoking differences; smoking explains price differences
-- **Conclusion:** Sex is a **confounding variable**, not a direct risk factor
+---
 
-#### 3.2 Regional Smoking Chi-Square Analysis (5 Tasks)
-- Region × Smoking contingency test: χ²=3.74, p=0.29 (non-significant)
+### Part 3: Custom Investigations (10 Tasks)
+
+**Sex-Stratified Smoking Analysis (5 Tasks)**
+- Males: 23.52% smokers | Females: 17.37% smokers
+- Sex is a confounding variable, not direct risk factor
+
+**Regional Smoking Chi-Square (5 Tasks)**
+- χ² = 3.74, p = 0.29 (non-significant)
 - Smoking rates uniform across regions (18-22%)
-- **Recommendation:** Regional differences driven by age/BMI, not smoking
 
 ---
 
-## 🛠️ Technical Implementation
+## 🛠️ Technical Specifications
 
-### Statistical Methods
-- ✅ Manual formula calculations before scipy validation
-- ✅ Levene's test for variance equality (ALL t-tests)
-- ✅ Welch's t-test when variances unequal
-- ✅ Mann-Whitney U non-parametric alternative
-- ✅ Bonferroni correction for multiple comparisons (FWER control)
-- ✅ 95% confidence intervals for all estimates
-- ✅ Cohen's d effect sizes with classification
-- ✅ Cramer's V for contingency tables
+### Statistical Methods Implemented
 
-### Data Processing
-- pandas 2.x: DataFrames, groupby, boolean indexing
-- numpy: vectorized operations, percentiles
-- scipy.stats: distributions, hypothesis tests
-- math: combinatorics (Binomial), exponentials (Poisson)
-- matplotlib/seaborn: publication-quality visualizations
+| Method | Purpose | Status |
+|--------|---------|--------|
+| **Manual Formulas** | Binomial PMF (math.comb), Poisson PMF (math.factorial) | ✅ |
+| **Levene's Test** | Variance equality check before EVERY t-test | ✅ |
+| **Welch's t-test** | Unequal variances handling | ✅ |
+| **Mann-Whitney U** | Non-parametric validation | ✅ |
+| **Bonferroni Correction** | Multiple comparisons FWER control | ✅ |
+| **95% Confidence Intervals** | Uncertainty quantification | ✅ |
+| **Cohen's d** | Effect size with classification | ✅ |
+| **Cramer's V** | Contingency table association | ✅ |
+
+### Dependencies
+```
+pandas     2.0+    # Data manipulation
+numpy      1.24+   # Numerical computing
+scipy      1.10+   # Statistical functions
+matplotlib 3.7+    # Visualization
+seaborn    0.12+   # Statistical graphics
+jupyter    1.0+    # Interactive notebooks
+```
 
 ### Reproducibility
-- **Random Seed:** `np.random.seed(42)`
-- **Sequential Execution:** All 31 cells execute without errors
-- **150+ Kernel Variables:** All available for inspection
-
----
-
-## 📈 Code Quality Standards
-
-| Dimension | Standard | Status |
-|-----------|----------|--------|
-| **Naming** | Descriptive variables (e.g., `smoker_charges`) | ✅ |
-| **Comments** | English interpretation after each task | ✅ |
-| **Visualizations** | Title, labels, legend, grid on ALL plots | ✅ |
-| **Business Logic** | Conclusions framed for pricing committee | ✅ |
-| **Assumptions** | Tested before each inference | ✅ |
-| **Output** | Exact p-values (never "p < 0.05") | ✅ |
+- ✅ Random seed: `np.random.seed(42)`
+- ✅ All 31 cells execute sequentially
+- ✅ 150+ kernel variables available for inspection
+- ✅ No hardcoded magic numbers
 
 ---
 
